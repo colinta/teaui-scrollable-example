@@ -19,8 +19,9 @@ The root `postinstall` installs each app independently. This is intentional: the
 ## Run
 
 ```bash
-pnpm ink
-pnpm teaui
+pnpm ink            # Ink's normal inline output
+pnpm teaui          # TeaUI fullscreen mode
+pnpm teaui --inline # TeaUI inline mode, using an 11-row region
 ```
 
 Both versions use the same controls:

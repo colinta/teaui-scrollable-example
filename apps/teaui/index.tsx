@@ -67,5 +67,10 @@ function App() {
 let screen: Screen | undefined
 ;(async () => {
   interceptConsoleLog()
-  ;[screen] = await run(<App />)
+
+  const inline = process.argv.includes('--inline')
+  const options = inline
+    ? {display: {mode: 'inline' as const, height: 11}}
+    : undefined
+  ;[screen] = await run(<App />, options)
 })()

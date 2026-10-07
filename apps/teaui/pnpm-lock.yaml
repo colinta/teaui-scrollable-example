@@ -18,6 +18,9 @@ importers:
         specifier: 18.3.1
         version: 18.3.1
     devDependencies:
+      '@types/node':
+        specifier: 24.10.1
+        version: 24.10.1
       '@types/react':
         specifier: 18.3.31
         version: 18.3.31
@@ -43,6 +46,9 @@ packages:
 
   '@teaui/term@1.19.22':
     resolution: {integrity: sha512-Qq0M5zrkIaRzMj7TwQf7u2JRI4RIXyaYH1YdlBK4aQdJpbZyAhBPjR14n5bZJeua5A27xR3gDIj9M8TmsV3iBA==, tarball: https://registry.npmjs.org/@teaui/term/-/term-1.19.22.tgz}
+
+  '@types/node@24.10.1':
+    resolution: {integrity: sha512-GNWcUTRBgIRJD5zj+Tq0fKOJ5XZajIiBroOF0yvj2bSU1WvNdYS/dn9UxwsujGW4JX06dnHyjV2y9rRaybH0iQ==, tarball: https://registry.npmjs.org/@types/node/-/node-24.10.1.tgz}
 
   '@types/prop-types@15.7.15':
     resolution: {integrity: sha512-F6bEyamV9jKGAFBEmlQnesRPGOQqS2+Uwi0Em15xenOxHaf2hv6L8YCVn3rPdPJOiJfPiCnLIRyvwVaqMY3MIw==, tarball: https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.15.tgz}
@@ -78,6 +84,9 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
+  undici-types@7.16.0:
+    resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==, tarball: https://registry.npmjs.org/undici-types/-/undici-types-7.16.0.tgz}
+
 snapshots:
 
   '@teaui/core@1.19.22':
@@ -94,6 +103,10 @@ snapshots:
       react-reconciler: 0.29.2(react@18.3.1)
 
   '@teaui/term@1.19.22': {}
+
+  '@types/node@24.10.1':
+    dependencies:
+      undici-types: 7.16.0
 
   '@types/prop-types@15.7.15': {}
 
@@ -125,3 +138,5 @@ snapshots:
       loose-envify: 1.4.0
 
   typescript@5.9.3: {}
+
+  undici-types@7.16.0: {}

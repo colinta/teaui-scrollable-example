@@ -322,7 +322,7 @@
         <article class="panel tea-panel">
           <div class="panel-head">
             <h3 class="tea">TeaUI</h3>
-            <span class="badge">fullscreen renderer</span>
+            <span class="badge">fullscreen or inline</span>
           </div>
           <div class="body">
             <div class="terminal" aria-label="TeaUI terminal preview">╭────────────────────────────────────────────╮
@@ -336,7 +336,7 @@
 │Line 08                                     │
 ╰────────────────────────────────────────────╯
 <span class="dim">arrows to scroll, q to quit</span></div>
-            <p class="note">A flexed <code>Box</code> draws the border, while its <code>Scrollable</code> child owns the scrolling mechanics.</p>
+            <p class="note">A flexed <code>Box</code> draws the border, while its <code>Scrollable</code> child owns the scrolling mechanics. Pass <code>--inline</code> to use an 11-row inline region.</p>
           </div>
         </article>
       </div>
@@ -482,7 +482,7 @@
           <tr>
             <td>Terminal mode</td>
             <td>Live region in the normal terminal output.</td>
-            <td>Fullscreen alternate-screen application.</td>
+            <td>Fullscreen by default; <code>pnpm teaui --inline</code> uses an inline terminal region.</td>
           </tr>
           <tr>
             <td>Scrolling primitive</td>

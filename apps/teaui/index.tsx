@@ -44,7 +44,6 @@ function App() {
           <Scrollable.down
             ref={scrollable}
             contentSize={{width: 140, height: 40}}
-            showScrollbars={false}
           >
             {Array.from({length: 40}, (_, index) => (
               <Text key={index}>

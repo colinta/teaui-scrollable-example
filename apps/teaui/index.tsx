@@ -16,47 +16,24 @@ import {
 } from '@teaui/react'
 
 function App() {
-  const scrollable = useRef<ScrollableView>(null)
-
-  function handleKey(event: KeyEvent) {
-    switch (event.name) {
-      case 'up':
-        scrollable.current?.scrollBy(0, -1)
-        break
-      case 'down':
-        scrollable.current?.scrollBy(0, 1)
-        break
-      case 'left':
-        scrollable.current?.scrollBy(-2, 0)
-        break
-      case 'right':
-        scrollable.current?.scrollBy(2, 0)
-        break
-      case 'q':
-        screen?.exit()
-    }
-  }
-
   return (
-    <Keyboard onKey={handleKey}>
-      <Stack.down>
-        <Box border="rounded" flex={1}>
-          <Scrollable.down ref={scrollable}>
-            {Array.from({length: 40}, (_, index) => (
-              <Text key={index}>
-                Line {String(index + 1).padStart(2, '0')}{' '}
-                {index % 5 === 0
-                  ? `◀ marker ${'·'.repeat(100)} end-of-line-${index + 1} ▶`
-                  : ''}
-              </Text>
-            ))}
-          </Scrollable.down>
-        </Box>
-        <Text dim>
-          arrows to scroll, q to quit
-        </Text>
-      </Stack.down>
-    </Keyboard>
+    <Stack.down>
+      <Box border="rounded" flex={1}>
+        <Scrollable.down>
+          {Array.from({length: 40}, (_, index) => (
+            <Text key={index}>
+              Line {String(index + 1).padStart(2, '0')}{' '}
+              {index % 5 === 0
+                ? `◀ marker ${'·'.repeat(100)} end-of-line-${index + 1} ▶`
+                : ''}
+            </Text>
+          ))}
+        </Scrollable.down>
+      </Box>
+      <Text dim>
+        mousewheel to scroll, ctrl+c to quit
+      </Text>
+    </Stack.down>
   )
 }
 

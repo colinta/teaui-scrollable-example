@@ -41,10 +41,7 @@ function App() {
     <Keyboard onKey={handleKey}>
       <Stack.down>
         <Box border="rounded" flex={1}>
-          <Scrollable.down
-            ref={scrollable}
-            contentSize={{width: 140, height: 40}}
-          >
+          <Scrollable.down ref={scrollable}>
             {Array.from({length: 40}, (_, index) => (
               <Text key={index}>
                 Line {String(index + 1).padStart(2, '0')}{' '}
@@ -55,8 +52,8 @@ function App() {
             ))}
           </Scrollable.down>
         </Box>
-        <Text>
-          <Style dim>arrows to scroll, q to quit</Style>
+        <Text dim>
+          arrows to scroll, q to quit
         </Text>
       </Stack.down>
     </Keyboard>

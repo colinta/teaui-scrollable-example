@@ -1,0 +1,11 @@
+{
+  "name": "ink-teaui-scroll-comparison",
+  "private": true,
+  "scripts": {
+    "postinstall": "pnpm --dir apps/ink install && pnpm --dir apps/teaui install",
+    "ink": "pnpm --dir apps/ink start",
+    "teaui": "pnpm --dir apps/teaui start",
+    "build": "pnpm --dir apps/ink build && pnpm --dir apps/teaui build",
+    "clean": "pnpm --dir apps/ink clean && pnpm --dir apps/teaui clean"
+  }
+}

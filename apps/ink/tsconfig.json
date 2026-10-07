@@ -1,0 +1,14 @@
+{
+  "include": ["index.tsx"],
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "outDir": ".dist",
+    "jsx": "react"
+  }
+}

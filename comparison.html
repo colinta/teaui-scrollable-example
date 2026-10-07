@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ink vs TeaUI — Scroll Example</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --page: #0b0d12;
+      --panel: #121620;
+      --panel-2: #181d29;
+      --line: #293143;
+      --text: #e9edf5;
+      --muted: #98a2b5;
+      --ink: #b88cff;
+      --ink-soft: rgba(184, 140, 255, 0.12);
+      --tea: #58d6b2;
+      --tea-soft: rgba(88, 214, 178, 0.12);
+      --gold: #ffd166;
+      --code: #0a0c11;
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 12% -10%, rgba(184, 140, 255, 0.13), transparent 34rem),
+        radial-gradient(circle at 88% 0%, rgba(88, 214, 178, 0.11), transparent 32rem),
+        var(--page);
+      color: var(--text);
+      font: 15px/1.55 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    a { color: inherit; }
+
+    .page {
+      width: min(1440px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 64px 0 80px;
+    }
+
+    header {
+      max-width: 900px;
+      margin-bottom: 36px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font: 600 12px/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(36px, 7vw, 72px);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+    }
+
+    .ink { color: var(--ink); }
+    .tea { color: var(--tea); }
+
+    .lede {
+      max-width: 760px;
+      margin: 22px 0 0;
+      color: #c4cbd8;
+      font-size: 18px;
+    }
+
+    .verdict {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin: 28px 0 44px;
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(18, 22, 32, 0.76);
+    }
+
+    .verdict strong { color: var(--gold); }
+
+    h2 {
+      margin: 44px 0 16px;
+      font-size: 22px;
+      letter-spacing: -0.02em;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .columns {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    .panel {
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, var(--panel-2), var(--panel));
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+    }
+
+    .panel.ink-panel { border-top-color: var(--ink); }
+    .panel.tea-panel { border-top-color: var(--tea); }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .badge {
+      flex: none;
+      padding: 3px 8px;
+      border-radius: 999px;
+      color: var(--muted);
+      background: #0d1017;
+      font: 11px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .body { padding: 18px; }
+
+    .terminal {
+      overflow: hidden;
+      min-height: 250px;
+      padding: 16px;
+      border: 1px solid #31394b;
+      border-radius: 10px;
+      background: #05070a;
+      color: #edf2f7;
+      font: 13px/1.35 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      white-space: pre;
+    }
+
+    .terminal .dim { color: #7f899b; }
+    .terminal .crop { color: #aab4c5; }
+
+    .note {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .flow {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
+    }
+
+    .flow li {
+      position: relative;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #0e1118;
+    }
+
+    .flow li + li::before {
+      content: "↓";
+      position: absolute;
+      top: -17px;
+      left: 18px;
+      color: var(--muted);
+      background: var(--panel);
+    }
+
+    pre {
+      margin: 0;
+      overflow: auto;
+      padding: 18px;
+      background: var(--code);
+      color: #d9e1ef;
+      font: 12.5px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      tab-size: 2;
+    }
+
+    .token-key { color: #8ec8ff; }
+    .token-value { color: #f3b980; }
+    .token-fn { color: #c8a6ff; }
+    .token-comment { color: #6f7a8e; }
+    .token-component { color: #62d9b7; }
+
+    .code-title {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      background: #0e1118;
+      font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .comparison {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    .comparison th,
+    .comparison td {
+      padding: 13px 16px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .comparison tr:last-child td { border-bottom: 0; }
+    .comparison th:last-child,
+    .comparison td:last-child { border-right: 0; }
+    .comparison th { color: var(--muted); background: var(--panel-2); }
+    .comparison th:nth-child(2) { color: var(--ink); }
+    .comparison th:nth-child(3) { color: var(--tea); }
+    .comparison td:first-child { width: 21%; color: #bcc5d4; font-weight: 650; }
+    .comparison td:nth-child(2),
+    .comparison td:nth-child(3) { width: 39.5%; }
+
+    code {
+      padding: 0.12em 0.35em;
+      border: 1px solid #30384a;
+      border-radius: 5px;
+      background: #0c0f15;
+      font: 0.9em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .checks {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .check {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--panel);
+    }
+
+    .check b { display: block; margin-bottom: 4px; color: var(--tea); }
+    .check span { color: var(--muted); font-size: 13px; }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 52px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 850px) {
+      .page { width: min(100% - 20px, 720px); padding-top: 36px; }
+      .columns, .checks { grid-template-columns: 1fr; }
+      .comparison { display: block; overflow-x: auto; }
+      .comparison th, .comparison td { min-width: 220px; }
+      footer { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <p class="eyebrow">Implementation comparison</p>
+      <h1><span class="ink">Ink</span> vs <span class="tea">TeaUI</span><br>scroll views</h1>
+      <p class="lede">
+        The two demos produce the same two-axis scrolling experience,
+        but TeaUI can express it with a much smaller layout.
+      </p>
+    </header>
+
+    <div class="verdict">
+      <strong>In one sentence:</strong>
+      <span>Ink assembles scrolling from measurement, clipping, state, and content offsets; TeaUI delegates all of those mechanics to <code>Scrollable</code>.</span>
+    </div>
+
+    <section aria-labelledby="output-heading">
+      <h2 id="output-heading">Visible result</h2>
+      <div class="columns">
+        <article class="panel ink-panel">
+          <div class="panel-head">
+            <h3 class="ink">Ink</h3>
+            <span class="badge">inline renderer</span>
+          </div>
+          <div class="body">
+            <div class="terminal" aria-label="Ink terminal preview">╭────────────────────────────────────────────╮
+│Line 01 ◀ marker ··························│
+│Line 02                                     │
+│Line 03                                     │
+│Line 04                                     │
+│Line 05                                     │
+│Line 06 ◀ marker ··························│
+│Line 07                                     │
+│Line 08                                     │
+╰────────────────────────────────────────────╯
+<span class="dim">scrollTop=0/32 scrollLeft=0/… client=…x8</span></div>
+            <p class="note">Ink updates a live output region in the normal terminal buffer.</p>
+          </div>
+        </article>
+
+        <article class="panel tea-panel">
+          <div class="panel-head">
+            <h3 class="tea">TeaUI</h3>
+            <span class="badge">fullscreen renderer</span>
+          </div>
+          <div class="body">
+            <div class="terminal" aria-label="TeaUI terminal preview">╭────────────────────────────────────────────╮
+│Line 01 ◀ marker ··························│
+│Line 02                                     │
+│Line 03                                     │
+│Line 04                                     │
+│Line 05                                     │
+│Line 06 ◀ marker ··························│
+│Line 07                                     │
+│Line 08                                     │
+╰────────────────────────────────────────────╯
+<span class="dim">arrows to scroll, q to quit</span></div>
+            <p class="note">A flexed <code>Box</code> draws the border, while its <code>Scrollable</code> child owns the scrolling mechanics.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="architecture-heading">
+      <h2 id="architecture-heading">Architecture</h2>
+      <div class="columns">
+        <article class="panel ink-panel">
+          <div class="panel-head"><h3 class="ink">Ink: compose low-level primitives</h3></div>
+          <div class="body">
+            <ol class="flow">
+              <li><b>useBoxMetrics(viewportRef)</b><br>Measure the border’s client area.</li>
+              <li><b>useBoxMetrics(contentRef)</b><br>Measure the natural 140×40 content.</li>
+              <li><b>React state</b><br>Clamp requested X/Y against calculated maxima.</li>
+              <li><b>Box contentOffsetX/Y</b><br>Translate children and clip hidden overflow.</li>
+            </ol>
+          </div>
+        </article>
+
+        <article class="panel tea-panel">
+          <div class="panel-head"><h3 class="tea">TeaUI: use the scrolling primitive</h3></div>
+          <div class="body">
+            <ol class="flow">
+              <li><b>Box flex={1}</b><br>Fill the space above the footer and draw the rounded border.</li>
+              <li><b>Scrollable</b><br>Measure, translate, clip, and clamp the content.</li>
+              <li><b>scrollBy(dx, dy)</b><br>Connect arrow keys directly to the component.</li>
+              <li><b>Text footer</b><br>A normal sibling stays fixed below the scrolling region.</li>
+            </ol>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="viewport-code-heading">
+      <h2 id="viewport-code-heading">Viewport and scrolling</h2>
+      <div class="columns">
+        <article class="panel ink-panel">
+          <div class="code-title">Ink · scroll.tsx</div>
+          <pre><span class="token-key">const</span> ref = <span class="token-fn">useRef</span>(null)
+<span class="token-key">const</span> contentRef = <span class="token-fn">useRef</span>(null)
+<span class="token-key">const</span> {clientWidth, clientHeight} =
+  <span class="token-fn">useBoxMetrics</span>(ref)
+<span class="token-key">const</span> content = <span class="token-fn">useBoxMetrics</span>(contentRef)
+
+<span class="token-component">&lt;Box</span>
+  ref={ref}
+  height={10}
+  overflow=<span class="token-value">"hidden"</span>
+  contentOffsetY={scrollTop}
+  contentOffsetX={scrollLeft}
+  flexDirection=<span class="token-value">"column"</span>
+  borderStyle=<span class="token-value">"round"</span>
+<span class="token-component">&gt;</span>
+  <span class="token-component">&lt;Box</span>
+    ref={contentRef}
+    flexDirection=<span class="token-value">"column"</span>
+    flexShrink={0}
+    width={140}
+  <span class="token-component">&gt;</span>
+    {children}
+  <span class="token-component">&lt;/Box&gt;</span>
+<span class="token-component">&lt;/Box&gt;</span></pre>
+        </article>
+
+        <article class="panel tea-panel">
+          <div class="code-title">TeaUI · index.tsx</div>
+          <pre><span class="token-key">const</span> scrollable =
+  <span class="token-fn">useRef</span>&lt;ScrollableView&gt;(null)
+
+<span class="token-component">&lt;Stack.down&gt;</span>
+  <span class="token-component">&lt;Box</span> border=<span class="token-value">"rounded"</span> flex={1}<span class="token-component">&gt;</span>
+    <span class="token-component">&lt;Scrollable.down</span>
+      ref={scrollable}
+      contentSize={{width: 140, height: 40}}
+      showScrollbars={false}
+    <span class="token-component">&gt;</span>
+      {children}
+    <span class="token-component">&lt;/Scrollable.down&gt;</span>
+  <span class="token-component">&lt;/Box&gt;</span>
+  <span class="token-component">&lt;Text&gt;</span>arrows to scroll, q to quit<span class="token-component">&lt;/Text&gt;</span>
+<span class="token-component">&lt;/Stack.down&gt;</span>
+
+<span class="token-comment">// No Geometry, offset state, or clamp math.</span></pre>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="input-code-heading">
+      <h2 id="input-code-heading">Keyboard input</h2>
+      <div class="columns">
+        <article class="panel ink-panel">
+          <div class="code-title">Ink · useInput hooks</div>
+          <pre><span class="token-fn">useInput</span>((_input, key) =&gt; {
+  <span class="token-key">if</span> (key.upArrow)    scrollY(-1)
+  <span class="token-key">if</span> (key.downArrow)  scrollY(1)
+  <span class="token-key">if</span> (key.leftArrow)  scrollX(-2)
+  <span class="token-key">if</span> (key.rightArrow) scrollX(2)
+})
+
+<span class="token-key">const</span> {exit} = <span class="token-fn">useApp</span>()
+<span class="token-fn">useInput</span>(input =&gt; {
+  <span class="token-key">if</span> (input === <span class="token-value">'q'</span>) exit()
+})</pre>
+        </article>
+
+        <article class="panel tea-panel">
+          <div class="code-title">TeaUI · Keyboard fallback</div>
+          <pre><span class="token-key">const</span> handleKey = <span class="token-fn">useCallback</span>(event =&gt; {
+  <span class="token-key">switch</span> (event.name) {
+    <span class="token-key">case</span> <span class="token-value">'up'</span>:
+      scrollable.current?.<span class="token-fn">scrollBy</span>(0, -1)
+      <span class="token-key">break</span>
+    <span class="token-key">case</span> <span class="token-value">'down'</span>:
+      scrollable.current?.<span class="token-fn">scrollBy</span>(0, 1)
+      <span class="token-key">break</span>
+    <span class="token-key">case</span> <span class="token-value">'left'</span>:
+      scrollable.current?.<span class="token-fn">scrollBy</span>(-2, 0)
+      <span class="token-key">break</span>
+    <span class="token-key">case</span> <span class="token-value">'right'</span>:
+      scrollable.current?.<span class="token-fn">scrollBy</span>(2, 0)
+      <span class="token-key">break</span>
+    <span class="token-key">case</span> <span class="token-value">'q'</span>:
+      screen?.<span class="token-fn">exit</span>()
+  }
+}, [])</pre>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="matrix-heading">
+      <h2 id="matrix-heading">Behavior and trade-offs</h2>
+      <table class="comparison">
+        <thead>
+          <tr><th>Concern</th><th>Ink example</th><th>TeaUI port</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>React model</td>
+            <td>React renderer with standard hooks.</td>
+            <td>React reconciler over TeaUI core views.</td>
+          </tr>
+          <tr>
+            <td>Terminal mode</td>
+            <td>Live region in the normal terminal output.</td>
+            <td>Fullscreen alternate-screen application.</td>
+          </tr>
+          <tr>
+            <td>Scrolling primitive</td>
+            <td>Built manually from <code>overflow</code> and <code>contentOffsetX/Y</code>.</td>
+            <td>Built-in <code>Scrollable</code> component with imperative <code>scrollBy()</code>.</td>
+          </tr>
+          <tr>
+            <td>Measurement</td>
+            <td>Both viewport and content are measured with refs.</td>
+            <td><code>Scrollable</code> measures its flex-assigned viewport and children internally; the demo declares a 140×40 extent.</td>
+          </tr>
+          <tr>
+            <td>Natural content size</td>
+            <td><code>flexShrink={0}</code> prevents Yoga from squeezing content.</td>
+            <td><code>Scrollable</code> lays out children in its larger content region.</td>
+          </tr>
+          <tr>
+            <td>Clipping</td>
+            <td><code>overflow="hidden"</code> clips to the border’s client area.</td>
+            <td><code>Scrollable</code> creates and clips its own offset viewport inside a rounded <code>Box</code>.</td>
+          </tr>
+          <tr>
+            <td>Resize safety</td>
+            <td>Effective offsets are clamped on every render.</td>
+            <td><code>Scrollable</code> recalculates and clamps its own bounds during layout.</td>
+          </tr>
+          <tr>
+            <td>Mouse</td>
+            <td>No mouse handling in the example.</td>
+            <td>Mouse-wheel support comes from <code>Scrollable</code>; visual scrollbars are disabled.</td>
+          </tr>
+          <tr>
+            <td>Rendering cost</td>
+            <td>All 40 rows remain mounted and laid out.</td>
+            <td>All rows remain mounted; TeaUI skips drawing fully offscreen children.</td>
+          </tr>
+          <tr>
+            <td>Exit</td>
+            <td><code>useApp().exit()</code></td>
+            <td><code>screen.exit()</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section aria-labelledby="parity-heading">
+      <h2 id="parity-heading">Parity checklist</h2>
+      <div class="checks">
+        <div class="check"><b>✓ Layout</b><span>A bordered 140×40 content area scrolls in all space above the fixed footer.</span></div>
+        <div class="check"><b>✓ Navigation</b><span>Vertical step 1; horizontal step 2; bounded on every edge.</span></div>
+        <div class="check"><b>✓ Responsive</b><span><code>Scrollable</code> updates and clamps itself when the terminal resizes.</span></div>
+        <div class="check"><b>✓ Presentation</b><span>Rounded border, hidden scrollbars, a compact fixed help line, and q-to-quit.</span></div>
+      </div>
+    </section>
+
+    <footer>
+      <span>Implementations: <code>apps/ink/index.tsx</code> and <code>apps/teaui/index.tsx</code></span>
+      <span><a href="https://github.com/vadimdemedes/ink/tree/master/examples/scroll">Original Ink example ↗</a></span>
+    </footer>
+  </main>
+</body>
+</html>
